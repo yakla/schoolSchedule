@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NetworkOperationAsyncTask.OnTaskCompleted {
     GetSchoolHtml getSchoolHtml = new GetSchoolHtml();
-    public static GridView mGridView;
+    public GridView mGridView;
     private List<String> mData;
 
 
