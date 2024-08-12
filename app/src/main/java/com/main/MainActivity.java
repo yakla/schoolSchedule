@@ -1,76 +1,67 @@
 package com.main;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.GridView;
+import android.text.format.Time;
+import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NetworkOperationAsyncTask.OnTaskCompleted {
-    GetSchoolHtml getSchoolHtml;
-    public GridView lessonGridView;
-    GridView hourGridView;
-    RecyclerView recyclerView;
-    private List<String> lessonData;
-    private List<String> hourData;
-    public Map<Integer, String> getDay = Map.of(6, " ראשון ", 5, " שני ", 4, " שלישי ", 3, " רביעי ", 2, " חמישי ", 1, " שישי ");
+    GetSchoolHtml getSchoolHtml = new GetSchoolHtml();
+    public TextView textView1;
+    public TextView textView2;
+    public String []getDay = {" ראשון ", " שני ", " שלישי ", " רביעי ", " חמישי ", " שישי "};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        new NetworkOperationAsyncTask(getSchoolHtml, this).execute();
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recycler_view);
-
-        hourGridView = findViewById(R.id.hour_Grid_View);
-
-        TabLayout tabLayOut = findViewById(R.id.tabLayout);
-        switch(tabLayOut.getSelectedTabPosition()){
-            case 1 -> getSchoolHtml = new GetSchoolHtml(GetSchoolHtml.Option.ScheduleUpdated);
-            case 2 -> getSchoolHtml = new GetSchoolHtml(GetSchoolHtml.Option.Schedule);
-        }
-
-//        lessonGridView = findViewById(R.id.simpleGridView);
-
-
-        hourData = new ArrayList<>();
-        lessonData = new ArrayList<>();
-
-
-        new NetworkOperationAsyncTask(getSchoolHtml, this).execute();
+        textView1 = findViewById(R.id.textView1);
+        textView2 = findViewById(R.id.textView2);
     }
 
     @Override
     public void onTaskCompleted(List<List<String>> result) {
+        Calendar calendar = Calendar.getInstance();
+        Date currentTime = calendar.getTime();
+        String formattedTime = DateFormat.getTimeInstance().format(currentTime);
+        formattedTime = formattedTime.replace(":","");
+        formattedTime = formattedTime.substring(0,4);
+        int hourNum = -1;
+        String temporarySave = "";
+        for (int i = 0; i <result.size(); i++) {
+            String []resultTime = result.get(i).get(0).split("-");
+            temporarySave = result.get(i).get(0);
+            for (int j = 0; j <resultTime.length; j++) {
+                resultTime[j] = resultTime[j].replace(":","");
+            }
 
-        hourData.add("שעה");
-        for (int j = 0; j < result.size(); j++) {
-            hourData.add(result.get(j).get(0));
-        }
-        for (int i = 1; i < 7; i++) {
-            for (int j = 0; j < result.size(); j++) {
-                if (j == 0) {
-                    lessonData.add(getDay.get(i));
-                } else {
-                    lessonData.add(result.get(j).get(i));
-                }
+            if(Integer.parseInt(resultTime[0])<Integer.parseInt(formattedTime)&&Integer.parseInt(resultTime[1])>Integer.parseInt(formattedTime)){
+                hourNum = i+1;
+                break;
+            }
+            else{
+                Log.d("time check", String.valueOf(Integer.parseInt(resultTime[0]) +"-<-"+ Integer.parseInt(formattedTime)+"-<-"+Integer.parseInt(resultTime[1])));
             }
         }
-
-
-        recyclerView.setAdapter(new RecyclerViewAdapter(this, lessonData));
-        hourGridView.setAdapter(new GridViewAdapter(this, hourData));
-    }
+        if(hourNum==-1){
+            textView1.setText("not School hour");
+        }
+        else {
+            textView1.setText("שעה :"+hourNum+"\n"+temporarySave);
+            textView2.setText(result.get(hourNum-1).get(currentTime.getDay()));
+        }}
 
 
 }

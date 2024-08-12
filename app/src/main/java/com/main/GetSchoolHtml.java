@@ -24,9 +24,6 @@ public class GetSchoolHtml {
     }
 
     public Option option ;
-    public GetSchoolHtml(Option option) {
-        this.option = option
-    }
 
 
 
@@ -36,7 +33,7 @@ public class GetSchoolHtml {
         Elements subjectCells = doc.select(".TableEventChange");
         List<List<String>> schedule = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new ArrayList<>(),new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
         for (int i = 2; i < 30; i += 2) {
-            schedule.get(i / 2-1).add(0, i / 2 + "\n" + timeElements.get(i).text() + "-" + timeElements.get(i + 1).text());
+            schedule.get(i / 2-1).add(0,timeElements.get(i).text() + "-" + timeElements.get(i + 1).text());
         }
         for (int i = 0; i < 14; i++) {
             for (int j = 0; j < 6; j++) {
