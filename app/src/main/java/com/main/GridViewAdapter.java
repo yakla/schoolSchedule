@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MySimpleGridViewAdapter extends BaseAdapter {
+public class GridViewAdapter extends BaseAdapter {
     private List<String> mData;
     private LayoutInflater mInflater;
 
-    public MySimpleGridViewAdapter(Context context, List<String> data) {
+    public GridViewAdapter(Context context, List<String> data) {
         mData = data;
         mInflater = LayoutInflater.from(context);
     }

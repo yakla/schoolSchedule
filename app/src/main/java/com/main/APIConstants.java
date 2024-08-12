@@ -3,33 +3,31 @@ package com.main;
 import java.util.Map;
 
 public class APIConstants {
-    public String responseString;
+    public String responseJson;
     public boolean isOffline = false;
-    public String[] removeWords = {
-            "<td class=\"TTCell\" nowrap>",
-            "</td>",
-            "<td class=\"TTCell\" nowrap=\"nowrap\">",
-            "<b>",
-            "&",
-            "nbsp;&nbsp",
-            "<div/>",
-            "br",
-            "tr bgcolor=\"#ffffff\" valign=\"top\"",
-            "\t\t\t<td valign=\"middle\" class=\"CName\"",
-            "div class=\"TTLesson\"",
-            "nbsp;",
-            "&",
-            "<",
-            ">",
-            "/ n sp;n sp;",
-            "r" ,
-            "class=\"TTLesson\"",
-            "quot;",
-            "\t\tt  gcolo=\"#ffffff\" valign=\"top\"",
-            "/span",
-
-
-    };
+    //    public String[] removeWords = {
+//            "<td class=\"TTCell\" nowrap>",
+//            "</td>",
+//            "<td class=\"TTCell\" nowrap=\"nowrap\">",
+//            "<b>",
+//            "&",
+//            "nbsp;&nbsp",
+//            "<div/>",
+//            "br",
+//            "tr bgcolor=\"#ffffff\" valign=\"top\"",
+//            "\t\t\t<td valign=\"middle\" class=\"CName\"",
+//            "div class=\"TTLesson\"",
+//            "nbsp;",
+//            "&",
+//            "<",
+//            ">",
+//            "/ n sp;n sp;",
+//            "r" ,
+//            "class=\"TTLesson\"",
+//            "quot;",
+//            "\t\tt  gcolo=\"#ffffff\" valign=\"top\"",
+//            "/span",
+//    };
     public Map<String, String> menuOptions = Map.of("Schedule", "dnn$ctr7126$TimeTableView$btnTimeTable", "ScheduleUpdated", "dnn$ctr7126$TimeTableView$btnChangesTable");
 
     public enum option {

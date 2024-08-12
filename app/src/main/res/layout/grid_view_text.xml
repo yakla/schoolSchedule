@@ -7,9 +7,10 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Default Text"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="37sp"
+        android:background="@drawable/grid_background"
+        android:gravity="center|center_vertical"
+        android:text="default"
+        android:textSize="11sp"
+        />
 </LinearLayout>

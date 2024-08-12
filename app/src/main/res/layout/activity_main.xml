@@ -2,6 +2,7 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,7 +36,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="20dp"
             android:layout_marginRight="40dp"
             android:autoSizeMaxTextSize="80sp"
             android:autoSizeMinTextSize="12sp"
@@ -74,16 +74,19 @@
             app:tabTextColor="@color/white">
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/Tablitem1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="שינויים" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/Tablitem2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="מערכת שינויים" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/Tablitem3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="מערכת" />
@@ -102,21 +105,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
-            <GridView
-                android:id="@+id/simpleGridView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:fadingEdge="vertical"
-                android:horizontalSpacing="1dp"
-                android:numColumns="4"
-                android:verticalSpacing="15dp"
-                android:visibility="visible">
 
-            </GridView>
+                android:layout_margin="16dp"
+                android:layout_marginStart="240dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:layout_toStartOf="@id/hour_Grid_View"
+                android:orientation="horizontal"
+                android:scrollbars="none"
+                ads:spanCount="14"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+            <!--            <HorizontalScrollView-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_alignStart="@+id/hourGrid"-->
+            <!--                android:layout_alignParentTop="true"-->
+            <!--                android:layout_alignParentEnd="true"-->
+            <!--                android:layout_alignParentBottom="true"-->
+            <!--                android:layout_marginStart="-1100dp"-->
+            <!--                android:layout_marginTop="0dp"-->
+            <!--                android:layout_marginEnd="170dp"-->
+            <!--                android:layout_marginBottom="0dp"-->
+            <!--                android:fillViewport="true">-->
+
+            <!--                <GridView-->
+            <!--                    android:id="@+id/simpleGridView"-->
+            <!--                    android:layout_width="1000dp"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:columnWidth="20dp"-->
+            <!--                    android:horizontalSpacing="20dp"-->
+            <!--                    android:numColumns="7"-->
+            <!--                    android:padding="10dp"-->
+            <!--                    android:stretchMode="columnWidth"-->
+            <!--                    android:verticalSpacing="1dp" >-->
+
+            <!--                </GridView>-->
+            <!--            </HorizontalScrollView>-->
+
+            <GridView
+                android:id="@+id/hour_Grid_View"
+                android:layout_width="95dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:columnWidth="100dp"
+                android:numColumns="1"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:scrollbars="none" />
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

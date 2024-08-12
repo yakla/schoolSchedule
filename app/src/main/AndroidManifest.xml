@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:icon="@mipmap/icon_new">
+    <application android:icon="@mipmap/icon_new"
+        android:label="מערכת שעות"
+        android:roundIcon="@mipmap/icon_new"
+        >
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"
+            android:value="ca-app-pub-1329368311786502~8548318987"
             android:allowBackup="true"
             android:dataExtractionRules="@xml/data_extraction_rules"
             android:fullBackupContent="@xml/backup_rules"
-            android:icon="@mipmap/icon_new"
-            android:label="מערכת שעות"
-            android:roundIcon="@mipmap/icon_new"
             android:theme="@style/Theme.SchoolSchedulePhones"
              />
         <activity
