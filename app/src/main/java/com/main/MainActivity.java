@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
             @Override
             public void run() {
                 new NetworkOperationAsyncTask(getSchoolHtml, MainActivity.this).execute();
-                if(!getSchoolHtml.apiConstant.isOffline){timer.cancel();}
+                if(!textView1.getText().equals(" loading...")){timer.cancel();}
             }
         }, 0, 5000);
 
