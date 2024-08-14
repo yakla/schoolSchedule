@@ -32,13 +32,15 @@ android {
 }
 
 dependencies {
+    implementation(libs.guava)
+    implementation(libs.work.runtime)
     implementation (libs.jsoup)
     implementation (libs.gson)
     implementation(libs.okhttp)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.firebase.crashlytics.buildtools)
-    implementation (libs.play.services.ads)
+//    implementation (libs.play.services.ads)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -5,14 +5,15 @@ import android.util.Log;
 
 import java.util.List;
 
-class NetworkOperationAsyncTask extends AsyncTask<Void, Void, List<List<String>> > {
-    GetSchoolHtml getSchoolHtml;
+class NetworkOperationAsyncTask extends AsyncTask<Void, Void, List<List<String>>> {
+    NetworkWorker getSchoolHtml;
     private final OnTaskCompleted listener;
 
     interface OnTaskCompleted {
         void onTaskCompleted(List<List<String>> result);
     }
-    public NetworkOperationAsyncTask(GetSchoolHtml getSchoolHtml ,OnTaskCompleted listener) {
+
+    public NetworkOperationAsyncTask(NetworkWorker getSchoolHtml, OnTaskCompleted listener) {
         this.getSchoolHtml = getSchoolHtml;
         this.listener = listener;
     }
@@ -20,14 +21,20 @@ class NetworkOperationAsyncTask extends AsyncTask<Void, Void, List<List<String>>
     @Override
     protected List<List<String>> doInBackground(Void... voids) {
         getSchoolHtml.Get();
-        Log.d("Html", getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson).toString());
-        return getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson);
+        if (getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson) != null) {
+            Log.d("Html", getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson).toString());
+            return getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson);
+        }
+        return null;
     }
 
     @Override
     protected void onPostExecute(List<List<String>> result) {
-        super.onPostExecute(result);
-        listener.onTaskCompleted(result);
-
+        if (result != null) {
+            super.onPostExecute(result);
+            if (!getSchoolHtml.apiConstant.isOffline) {
+                listener.onTaskCompleted(result);
+            }
+        }
     }
 }
