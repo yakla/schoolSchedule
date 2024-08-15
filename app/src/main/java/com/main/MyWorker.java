@@ -37,8 +37,6 @@ public class MyWorker extends Worker {
             1830,
             1845
     };
-    public int currentHour;
-
     public MyWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
     }
@@ -46,6 +44,7 @@ public class MyWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         Calendar calendar = Calendar.getInstance();
         Date currentTime = calendar.getTime();
         String formattedTime = DateFormat.getTimeInstance().format(currentTime);
@@ -57,11 +56,11 @@ public class MyWorker extends Worker {
                 newHour = i + 1;
             }
         }
-        if (newHour != currentHour) {
+        Log.d("bug!!","newHour :"+newHour+"\noldHour :"+sharedPreferences.getInt("currentHour",-1));
+        if (newHour != sharedPreferences.getInt("currentHour",-1)) {
             Log.d("MyWorker", "doWork() started");
             getHtml.Get();
             if (!getHtml.apiConstant.isOffline) {
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.putString("key", getHtml.apiConstant.responseJson);
@@ -133,8 +132,12 @@ public class MyWorker extends Worker {
                 hourNum = i + 1;
                 break;
             }
-            currentHour = hourNum;
         }
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("currentHour", hourNum);
+        editor.apply();
         if (hourNum == -1) {
             return "Not School Hours";
         } else {
