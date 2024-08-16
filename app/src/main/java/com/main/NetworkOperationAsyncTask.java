@@ -21,9 +21,16 @@ class NetworkOperationAsyncTask extends AsyncTask<Void, Void, List<List<String>>
     @Override
     protected List<List<String>> doInBackground(Void... voids) {
         getSchoolHtml.Get();
+        try {
         if (getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson) != null) {
-            Log.d("Html", getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson).toString());
-            return getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson);
+
+                Log.d("Html", getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson).toString());
+                return getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson);
+            }
+
+        }
+        catch (IndexOutOfBoundsException e){
+            return null;
         }
         return null;
     }

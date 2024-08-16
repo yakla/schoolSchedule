@@ -45,13 +45,14 @@ public class MyWorker extends Worker {
     @Override
     public Result doWork() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         Calendar calendar = Calendar.getInstance();
         Date currentTime = calendar.getTime();
         String formattedTime = DateFormat.getTimeInstance().format(currentTime);
         formattedTime = formattedTime.replace(":", "");
         formattedTime = formattedTime.substring(0, 4);
         int newHour = -1;
-        for (int i = 0; i < timeCheck.length; i++) {
+        for (int i = 0; i < timeCheck.length-1; i++) {
             if (timeCheck[i] <= Integer.parseInt(formattedTime) && Integer.parseInt(formattedTime) <= timeCheck[i + 1]) {
                 newHour = i + 1;
             }
@@ -61,14 +62,20 @@ public class MyWorker extends Worker {
             Log.d("MyWorker", "doWork() started");
             getHtml.Get();
             if (!getHtml.apiConstant.isOffline) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.putString("key", getHtml.apiConstant.responseJson);
                 editor.apply();
                 Log.d("MyWorker", "doWork() completed1");
 
-                showNotification("השיעור הבא", ReturnCurrentSubject(getHtml.convertHtmlToJson(sharedPreferences.getString("key", "default_value"))));
 
+                try {
+                    showNotification("השיעור הבא", ReturnCurrentSubject(getHtml.convertHtmlToJson(sharedPreferences.getString("key", "default_value"))));
+                }
+                catch (IndexOutOfBoundsException e){
+                    editor.putInt("currentHour", newHour);
+                    editor.apply();
+                    showNotification( "השיעור הבא","לא יכול לטעון");
+                }
                 Log.d("MyWorker", "doWork() completed2");
             }
         }
