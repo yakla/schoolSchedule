@@ -35,7 +35,7 @@ dependencies {
     implementation(libs.guava)
     implementation(libs.work.runtime)
     implementation (libs.jsoup)
-    implementation (libs.gson)
+//    implementation (libs.gson)
     implementation(libs.okhttp)
     implementation(libs.appcompat)
     implementation(libs.material)

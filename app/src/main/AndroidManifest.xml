@@ -8,7 +8,8 @@
 
     <application android:icon="@mipmap/icon_new"
         android:label="מערכת שעות"
-        android:roundIcon="@mipmap/icon_new">
+        android:roundIcon="@mipmap/icon_new"
+        android:theme="@style/Theme.SchoolSchedulePhones">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-1329368311786502~8548318987"
