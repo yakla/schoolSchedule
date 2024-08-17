@@ -18,7 +18,6 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 
-
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!textView1.getText().equals(" loading...")&&!isNetworking){
+                if (!textView1.getText().equals(" loading...") && !isNetworking) {
                     isNetworking = true;
                     new NetworkOperationAsyncTask(getSchoolHtml, MainActivity.this).execute();
                 }
@@ -65,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
             @Override
             public void run() {
                 new NetworkOperationAsyncTask(getSchoolHtml, MainActivity.this).execute();
+                Log.d("day", String.valueOf(Calendar.getInstance().getTime().getDay()));
                 if (!textView1.getText().equals(" loading...")) {
                     timer.cancel();
                 }
@@ -81,82 +81,83 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
     }
 
 
-
-
     @Override
     public void onTaskCompleted(List<List<String>> result) {
-        Calendar calendar = Calendar.getInstance();
-        Date currentTime = calendar.getTime();
-        String formattedTime = DateFormat.getTimeInstance().format(currentTime);
-        formattedTime = formattedTime.replace(":", "");
-        formattedTime = formattedTime.substring(0, 4);
-        int hourNum = -1;
-        String temporarySave = "";
-        for (int i = 0; i < result.size(); i++) {
-            String[] resultTimeBack = result.get(i).get(0).split("-");
-            String[] resultTimeFront;
-            if (result.size() > i + 1) {
-                resultTimeFront = result.get(i + 1).get(0).split("-");
-            } else {
-                resultTimeFront = new String[]{result.get(i).get(0).split("-")[1], result.get(i).get(0).split("-")[0]};
-            }
-            temporarySave = result.get(i).get(0);
-            for (int j = 0; j < resultTimeBack.length; j++) {
-                resultTimeBack[j] = resultTimeBack[j].replace(":", "");
-                resultTimeFront[j] = resultTimeFront[j].replace(":", "");
-            }
-            int timeBeforeShow1 = 15;
-            int timeBeforeShow2 = 15;
-            if (Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) == 0) {
-                timeBeforeShow1 = 55;
-            }
+        if (!result.get(0).get(0).equals("error")) {
+            Calendar calendar = Calendar.getInstance();
+            Date currentTime = calendar.getTime();
+            String formattedTime = DateFormat.getTimeInstance().format(currentTime);
+            formattedTime = formattedTime.replace(":", "");
+            formattedTime = formattedTime.substring(0, 4);
+            int hourNum = -1;
+            String temporarySave = "";
+            for (int i = 0; i < result.size(); i++) {
+                String[] resultTimeBack = result.get(i).get(0).split("-");
+                String[] resultTimeFront;
+                if (result.size() > i + 1) {
+                    resultTimeFront = result.get(i + 1).get(0).split("-");
+                } else {
+                    resultTimeFront = new String[]{result.get(i).get(0).split("-")[1], result.get(i).get(0).split("-")[0]};
+                }
+                temporarySave = result.get(i).get(0);
+                for (int j = 0; j < resultTimeBack.length; j++) {
+                    resultTimeBack[j] = resultTimeBack[j].replace(":", "");
+                    resultTimeFront[j] = resultTimeFront[j].replace(":", "");
+                }
+                int timeBeforeShow1 = 15;
+                int timeBeforeShow2 = 15;
+                if (Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) == 0) {
+                    timeBeforeShow1 = 55;
+                }
 
-            if (Integer.parseInt(resultTimeFront[0].substring(resultTimeBack[0].length() - 2)) == 0) {
-                timeBeforeShow2 = 55;
-            }
+                if (Integer.parseInt(resultTimeFront[0].substring(resultTimeBack[0].length() - 2)) == 0) {
+                    timeBeforeShow2 = 55;
+                }
 
-            if (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1 <= Integer.parseInt(formattedTime) && Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2 >= Integer.parseInt(formattedTime)) {
-                hourNum = i + 1;
-                break;
-            } else {
-                Log.d("time check", Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) + ".first." + (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1) + "-<-" + Integer.parseInt(formattedTime) + "-<-" + (Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2));
-            }
+                if (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1 <= Integer.parseInt(formattedTime) && Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2 >= Integer.parseInt(formattedTime)) {
+                    hourNum = i + 1;
+                    break;
+                } else {
+                    Log.d("time check", Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) + ".first." + (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1) + "-<-" + Integer.parseInt(formattedTime) + "-<-" + (Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2));
+                }
 //                Log.d("timeArray", String.valueOf((Integer.parseInt(resultTimeBack[0])-timeBeforeShow1)));
-        }
-        if (hourNum == -1) {
-            textView1.setText("not School hour");
-        } else {
-            textView1.setText("שיעור :" + hourNum + "\n" + temporarySave);
-            if(currentTime.getTime()<7) {
-                textView2.setText(result.get(hourNum - 1).get(currentTime.getDay()));
             }
-            else { textView2.setText("not School day");}
+            if (hourNum == -1) {
+                textView1.setText("not School hour");
+            } else {
+                textView1.setText("שיעור :" + hourNum + "\n" + temporarySave);
+                if (currentTime.getTime() + 1 < 7) {
+                    textView2.setText(result.get(hourNum - 1).get(currentTime.getDay() + 1));
+                } else {
+                    textView2.setText("not School day");
+                }
+            }
         }
+        textView2.setText("error while trying to request");
         isNetworking = false;
     }
 
 
-
-@Override
-public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    if (requestCode == PERMISSION_REQUEST_CODE) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // Schedule the work if permission is granted
-            scheduleWork();
-        } else {
-            // Handle the case where permission is denied
-            // You might want to show a message to the user
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Schedule the work if permission is granted
+                scheduleWork();
+            } else {
+                // Handle the case where permission is denied
+                // You might want to show a message to the user
+            }
         }
     }
-}
 
-private void scheduleWork() {
-    WorkRequest workRequest = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
-            .build();
+    private void scheduleWork() {
+        WorkRequest workRequest = new PeriodicWorkRequest.Builder(MyWorker.class, 15, TimeUnit.MINUTES)
+                .build();
 
-    WorkManager.getInstance(this).enqueue(workRequest);
-}
+        WorkManager.getInstance(this).enqueue(workRequest);
+    }
 }
 
 

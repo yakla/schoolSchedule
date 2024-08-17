@@ -1,7 +1,7 @@
 package com.main;
 
 
-
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -23,22 +23,30 @@ public class NetworkWorker {
     APIConstants apiConstant = new APIConstants();
 
     public List<List<String>> convertHtmlToJson(String html) {
-        if(!apiConstant.isOffline) {
-            Document doc = Jsoup.parse(html);
-            Elements timeElements = doc.select(".hour-time");
-            Elements subjectCells = doc.select(".TableEventChange");
-            List<List<String>> schedule = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-            for (int i = 2; i < 30; i += 2) {
-                schedule.get(i / 2 - 1).add(0, timeElements.get(i).text() + "-" + timeElements.get(i + 1).text());
-            }
-            for (int i = 0; i < 14; i++) {
-                for (int j = 0; j < 6; j++) {
-                    schedule.get(i).add(subjectCells.get(j + 6 * i + 6).text());
+        Log.d("schedule", "start");
+        if (apiConstant.responseJson != null) {
+            try {
+                Document doc = Jsoup.parse(html);
+                Elements timeElements = doc.select(".hour-time");
+                Elements subjectCells = doc.select(".TTLesson");
+                List<List<String>> schedule = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                for (int i = 2; i < 30; i += 2) {
+                    schedule.get(i / 2 - 1).add(0, timeElements.get(i).text() + "-" + timeElements.get(i + 1).text());
                 }
+                for (int i = 0; i < 14; i++) {
+                    for (int j = 0; j < 6; j++) {
+                        schedule.get(i).add(subjectCells.get(j + 6 * i + 6).text());
+                    }
+                }
+                Log.d("schedule", schedule.toString());
+                return schedule;
             }
-            return schedule;
+            catch (IndexOutOfBoundsException e){
+                return List.of(List.of("error"));
+            }
+        } else {
+            return null;
         }
-        else{return null;}
     }
 
     public void Get() {
@@ -72,6 +80,9 @@ public class NetworkWorker {
                 assert response.body() != null;
                 apiConstant.responseJson = response.body().string();
                 response.body().close();
+                Log.d("No error!!","in get");
+//                Log.d("No error!!","isOffline :"+apiConstant.responseJson);
+
 //                apiConstant.responseJson = convertHtmlToJson(apiConstant.responseJson);
 //                FileWriter fileWriter = new FileWriter("jsonSave");
 //                fileWriter.write(apiConstant.responseJson);
@@ -84,6 +95,7 @@ public class NetworkWorker {
             }
 
         } catch (IOException e) {
+            Log.d("error!!","in get");
             apiConstant.isOffline = true;
         }
     }

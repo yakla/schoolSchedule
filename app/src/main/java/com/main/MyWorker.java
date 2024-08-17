@@ -102,50 +102,53 @@ public class MyWorker extends Worker {
     }
 
     String ReturnCurrentSubject(List<List<String>> result) {
-        Calendar calendar = Calendar.getInstance();
-        Date currentTime = calendar.getTime();
-        String formattedTime = DateFormat.getTimeInstance().format(currentTime);
-        formattedTime = formattedTime.replace(":", "");
-        formattedTime = formattedTime.substring(0, 4);
-        int hourNum = -1;
-        String temporarySave = "";
-        for (int i = 0; i < result.size(); i++) {
-            String[] resultTimeBack = result.get(i).get(0).split("-");
-            String[] resultTimeFront;
-            if (result.size() > i + 1) {
-                resultTimeFront = result.get(i + 1).get(0).split("-");
+        if (!result.get(0).get(0).equals("error")) {
+            Calendar calendar = Calendar.getInstance();
+            Date currentTime = calendar.getTime();
+            String formattedTime = DateFormat.getTimeInstance().format(currentTime);
+            formattedTime = formattedTime.replace(":", "");
+            formattedTime = formattedTime.substring(0, 4);
+            int hourNum = -1;
+            String temporarySave = "";
+            for (int i = 0; i < result.size(); i++) {
+                String[] resultTimeBack = result.get(i).get(0).split("-");
+                String[] resultTimeFront;
+                if (result.size() > i + 1) {
+                    resultTimeFront = result.get(i + 1).get(0).split("-");
+                } else {
+                    resultTimeFront = new String[]{result.get(i).get(0).split("-")[1], result.get(i).get(0).split("-")[0]};
+                }
+                temporarySave = result.get(i).get(0);
+                for (int j = 0; j < resultTimeBack.length; j++) {
+                    resultTimeBack[j] = resultTimeBack[j].replace(":", "");
+                    resultTimeFront[j] = resultTimeFront[j].replace(":", "");
+                }
+                int timeBeforeShow1 = 15;
+                int timeBeforeShow2 = 15;
+                if (Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) == 0) {
+                    timeBeforeShow1 = 55;
+                }
+
+                if (Integer.parseInt(resultTimeFront[0].substring(resultTimeBack[0].length() - 2)) == 0) {
+                    timeBeforeShow2 = 55;
+                }
+
+                if (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1 <= Integer.parseInt(formattedTime) && Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2 >= Integer.parseInt(formattedTime)) {
+                    hourNum = i + 1;
+                    break;
+                }
+            }
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt("currentHour", hourNum);
+            editor.apply();
+            if (hourNum == -1) {
+                return "Not School Hours";
             } else {
-                resultTimeFront = new String[]{result.get(i).get(0).split("-")[1], result.get(i).get(0).split("-")[0]};
-            }
-            temporarySave = result.get(i).get(0);
-            for (int j = 0; j < resultTimeBack.length; j++) {
-                resultTimeBack[j] = resultTimeBack[j].replace(":", "");
-                resultTimeFront[j] = resultTimeFront[j].replace(":", "");
-            }
-            int timeBeforeShow1 = 15;
-            int timeBeforeShow2 = 15;
-            if (Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) == 0) {
-                timeBeforeShow1 = 55;
-            }
-
-            if (Integer.parseInt(resultTimeFront[0].substring(resultTimeBack[0].length() - 2)) == 0) {
-                timeBeforeShow2 = 55;
-            }
-
-            if (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1 <= Integer.parseInt(formattedTime) && Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2 >= Integer.parseInt(formattedTime)) {
-                hourNum = i + 1;
-                break;
+                return result.get(hourNum - 1).get(currentTime.getDay());
             }
         }
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putInt("currentHour", hourNum);
-        editor.apply();
-        if (hourNum == -1) {
-            return "Not School Hours";
-        } else {
-            return result.get(hourNum - 1).get(currentTime.getDay());
-        }
+        else {return "error while trying to request";}
     }
 }

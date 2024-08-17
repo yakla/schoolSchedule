@@ -21,27 +21,19 @@ class NetworkOperationAsyncTask extends AsyncTask<Void, Void, List<List<String>>
     @Override
     protected List<List<String>> doInBackground(Void... voids) {
         getSchoolHtml.Get();
-        try {
-        if (getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson) != null) {
-
-                Log.d("Html", getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson).toString());
-                return getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson);
-            }
-
-        }
-        catch (IndexOutOfBoundsException e){
-            return null;
-        }
-        return null;
+//        Log.d("netWorkDebug", getSchoolHtml.apiConstant.responseJson);
+                List<List<String>> json = getSchoolHtml.convertHtmlToJson(getSchoolHtml.apiConstant.responseJson);
+//                Log.d("newtWorkDebug", json.toString());
+                return json;
     }
 
     @Override
     protected void onPostExecute(List<List<String>> result) {
         if (result != null) {
-            super.onPostExecute(result);
-            if (!getSchoolHtml.apiConstant.isOffline) {
-                listener.onTaskCompleted(result);
-            }
+                super.onPostExecute(result);
+                if (!getSchoolHtml.apiConstant.isOffline) {
+                    listener.onTaskCompleted(result);
+                }
         }
     }
 }
