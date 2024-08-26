@@ -146,7 +146,7 @@ public class MyWorker extends Worker {
             if (hourNum == -1) {
                 return "Not School Hours";
             } else {
-                return result.get(hourNum - 1).get(currentTime.getDay());
+                return result.get(hourNum - 1).get(currentTime.getDay()+1);
             }
         }
         else {return "error while trying to request";}
