@@ -136,11 +136,12 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
 //                    Log.d("dayCheck", String.valueOf(currentTime.getDay()));
                 }
             }
+
         }
         else {
             textView2.setText("error while trying to request");
-            isNetworking = false;
         }
+        isNetworking = false;
     }
 
 
