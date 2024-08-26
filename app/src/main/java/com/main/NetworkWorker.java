@@ -30,14 +30,14 @@ public class NetworkWorker {
                 Elements timeElements = doc.select(".hour-time");
                 Elements subjectCells = doc.select(".TTLesson");
                 Elements TTCell = doc.select(".TTCell");
-                Log.d("subjects amount", String.valueOf(TTCell.size()));
-                for (int i = 0; i <TTCell.size(); i++) {
-                    String text = "";
-                    if(TTCell.get(i).text().isEmpty()){
-                         text = "not a school hour";
-                    }
-                    Log.d(" all the subjects", "day :"+(i%6+1)+" hour :"+((int)(i/6)+1)+" "+TTCell.get(i).text()+text);
-                }
+//                Log.d("subjects amount", String.valueOf(TTCell.size()));
+//                for (int i = 0; i <TTCell.size(); i++) {
+//                    String text = "";
+//                    if(TTCell.get(i).text().isEmpty()){
+//                         text = "not a school hour";
+//                    }
+//                    Log.d(" all the subjects", "day :"+(i%6+1)+" hour :"+((int)(i/6)+1)+" "+TTCell.get(i).text()+text);
+//                }
 
                 List<List<String>> schedule = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
                 for (int i = 2; i < 30; i += 2) {
@@ -52,7 +52,7 @@ public class NetworkWorker {
                         schedule.get(i).add(TTCell.get(j + 6 * i + 6).text()+text);
                     }
                 }
-                Log.d("schedulePrint", schedule.toString());
+//                Log.d("schedulePrint", schedule.toString());
                 return schedule;
 //            }
 //            catch (IndexOutOfBoundsException e){
@@ -94,7 +94,7 @@ public class NetworkWorker {
                 assert response.body() != null;
                 apiConstant.responseJson = response.body().string();
                 response.body().close();
-                Log.d("No error!!","in get");
+//                Log.d("No error!!","in get");
 //                Log.d("No error!!","isOffline :"+apiConstant.responseJson);
 
 //                apiConstant.responseJson = convertHtmlToJson(apiConstant.responseJson);
@@ -109,7 +109,7 @@ public class NetworkWorker {
             }
 
         } catch (IOException e) {
-            Log.d("error!!","in get");
+//            Log.d("error!!","in get");
             apiConstant.isOffline = true;
         }
     }

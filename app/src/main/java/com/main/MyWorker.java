@@ -56,15 +56,15 @@ public class MyWorker extends Worker {
                 newHour = i + 1;
             }
         }
-        Log.d("bug!!","newHour :"+newHour+"\noldHour :"+sharedPreferences.getInt("currentHour",-1));
+//        Log.d("bug!!","newHour :"+newHour+"\noldHour :"+sharedPreferences.getInt("currentHour",-1));
         if (newHour != sharedPreferences.getInt("currentHour",-1)) {
-            Log.d("MyWorker", "doWork() started");
+//            Log.d("MyWorker", "doWork() started");
             getHtml.Get();
             if (!getHtml.apiConstant.isOffline) {
 
                 editor.putString("key", getHtml.apiConstant.responseJson);
                 editor.apply();
-                Log.d("MyWorker", "doWork() completed1");
+//                Log.d("MyWorker", "doWork() completed1");
 
 
                 try {
@@ -75,7 +75,7 @@ public class MyWorker extends Worker {
                     editor.apply();
                     showNotification( "השיעור הבא","לא יכול לטעון");
                 }
-                Log.d("MyWorker", "doWork() completed2");
+//                Log.d("MyWorker", "doWork() completed2");
             }
         }
         return Result.success();

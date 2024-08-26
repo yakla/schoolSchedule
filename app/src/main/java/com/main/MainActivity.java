@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
                     hourNum = i + 1;
                     break;
                 } else {
-                    Log.d("time check", Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) + ".first." + (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1) + "-<-" + Integer.parseInt(formattedTime) + "-<-" + (Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2));
+//                    Log.d("time check", Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) + ".first." + (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1) + "-<-" + Integer.parseInt(formattedTime) + "-<-" + (Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2));
                 }
             }
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
                 if (currentTime.getDay() + 1 < 7) {
                     textView2.setText(result.get(hourNum - 1).get(currentTime.getDay() + 1));
                 } else {
-                    textView2.setText("not School day 1");
+                    textView2.setText("not School day");
 //                    Log.d("dayCheck", String.valueOf(currentTime.getDay()));
                 }
             }
