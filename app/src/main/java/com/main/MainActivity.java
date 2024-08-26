@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                isNetworking = true;
                 new NetworkOperationAsyncTask(getSchoolHtml, MainActivity.this).execute();
                 Log.d("day", String.valueOf(Calendar.getInstance().getTime().getDay()));
                 if (!textView1.getText().equals(" loading...")) {
@@ -120,21 +121,24 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
                 } else {
                     Log.d("time check", Integer.parseInt(resultTimeBack[0].substring(resultTimeBack[0].length() - 2)) + ".first." + (Integer.parseInt(resultTimeBack[0]) - timeBeforeShow1) + "-<-" + Integer.parseInt(formattedTime) + "-<-" + (Integer.parseInt(resultTimeFront[0]) - timeBeforeShow2));
                 }
-//                Log.d("timeArray", String.valueOf((Integer.parseInt(resultTimeBack[0])-timeBeforeShow1)));
             }
+
             if (hourNum == -1) {
                 textView1.setText("not School hour");
             } else {
                 textView1.setText("שיעור :" + hourNum + "\n" + temporarySave);
-                if (currentTime.getTime() + 1 < 7) {
+                if (currentTime.getDay() + 1 < 7) {
                     textView2.setText(result.get(hourNum - 1).get(currentTime.getDay() + 1));
                 } else {
-                    textView2.setText("not School day");
+                    textView2.setText("not School day 1");
+//                    Log.d("dayCheck", String.valueOf(currentTime.getDay()));
                 }
             }
         }
-        textView2.setText("error while trying to request");
-        isNetworking = false;
+        else {
+            textView2.setText("error while trying to request");
+            isNetworking = false;
+        }
     }
 
 

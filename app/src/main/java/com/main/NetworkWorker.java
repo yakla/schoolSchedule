@@ -25,25 +25,39 @@ public class NetworkWorker {
     public List<List<String>> convertHtmlToJson(String html) {
         Log.d("schedule", "start");
         if (apiConstant.responseJson != null) {
-            try {
+//            try {
                 Document doc = Jsoup.parse(html);
                 Elements timeElements = doc.select(".hour-time");
                 Elements subjectCells = doc.select(".TTLesson");
+                Elements TTCell = doc.select(".TTCell");
+                Log.d("subjects amount", String.valueOf(TTCell.size()));
+                for (int i = 0; i <TTCell.size(); i++) {
+                    String text = "";
+                    if(TTCell.get(i).text().isEmpty()){
+                         text = "not a school hour";
+                    }
+                    Log.d(" all the subjects", "day :"+(i%6+1)+" hour :"+((int)(i/6)+1)+" "+TTCell.get(i).text()+text);
+                }
+
                 List<List<String>> schedule = List.of(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
                 for (int i = 2; i < 30; i += 2) {
                     schedule.get(i / 2 - 1).add(0, timeElements.get(i).text() + "-" + timeElements.get(i + 1).text());
                 }
                 for (int i = 0; i < 14; i++) {
                     for (int j = 0; j < 6; j++) {
-                        schedule.get(i).add(subjectCells.get(j + 6 * i + 6).text());
+                        String text = "";
+                        if(TTCell.get(j + 6 * i + 6).text().isEmpty()){
+                            text = "not a school hour";
+                        }
+                        schedule.get(i).add(TTCell.get(j + 6 * i + 6).text()+text);
                     }
                 }
-                Log.d("schedule", schedule.toString());
+                Log.d("schedulePrint", schedule.toString());
                 return schedule;
-            }
-            catch (IndexOutOfBoundsException e){
-                return List.of(List.of("error"));
-            }
+//            }
+//            catch (IndexOutOfBoundsException e){
+//                return List.of(List.of("error"));
+//            }
         } else {
             return null;
         }
