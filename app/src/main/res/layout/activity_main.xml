@@ -30,25 +30,33 @@
             android:gravity="center"
             android:text=" loading..."
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:text="loading..."
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:textStyle="bold"
+        <ScrollView
+            android:layout_width="149dp"
+            android:layout_height="67dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="-1dp"
+            android:overScrollMode="always"
+            ads:layout_constraintTop_toBottomOf="@+id/textView1"
+            ads:layout_constraintBottom_toTopOf="@+id/imageButton"
             ads:layout_constraintEnd_toEndOf="parent"
-            ads:layout_constraintStart_toStartOf="parent"
-            ads:layout_constraintTop_toBottomOf="@+id/textView1" />
+            ads:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|top"
+                android:text="loading..."
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+        </ScrollView>
 
         <ImageButton
             android:id="@+id/imageButton"

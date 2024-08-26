@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NetworkOperationA
         imageButton = findViewById(R.id.imageButton);
         textView1 = findViewById(R.id.textView1);
         textView2 = findViewById(R.id.textView2);
+        textView2.setMovementMethod(new ScrollingMovementMethod());
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
